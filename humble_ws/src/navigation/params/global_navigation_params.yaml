@@ -1,0 +1,51 @@
+amcl:
+  ros__parameters:
+    use_sim_time: True
+    global_frame_id: "map"
+    base_frame_id: "base_link"
+    odom_frame_id: "odom"
+    map_topic: map
+
+bt_navigator:
+  ros__parameters:
+    use_sim_time: True
+    plugin_lib_names:
+      - nav2_navigate_to_pose_action_bt_node
+
+global_costmap:
+  global_costmap:
+    ros__parameters:
+      use_sim_time: True
+      global_frame: "map"
+      robot_base_frame: "base_link"
+      resolution: 0.05
+      plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
+
+planner_server:
+  ros__parameters:
+    use_sim_time: True
+    planner_plugins: ["GridBased"]
+    GridBased:
+      plugin: "nav2_navfn_planner/NavfnPlanner"
+
+controller_server:
+  ros__parameters:
+    use_sim_time: True
+    controller_plugins: ["FollowPath"]
+    FollowPath:
+      plugin: "dwb_core::DWBLocalPlanner"
+
+waypoint_follower:
+  ros__parameters:
+    use_sim_time: True
+    loop_rate: 10
+    stop_on_failure: false
+    waypoint_task_executor_plugin: "wait_at_waypoint"
+    wait_at_waypoint:
+      plugin: "nav2_waypoint_follower::WaitAtWaypoint"
+      waypoint_pause_duration: 1.0
+
+map_server:
+  ros__parameters:
+    use_sim_time: True
+    yaml_filename: "extended_outdoor_navigation.yaml"
