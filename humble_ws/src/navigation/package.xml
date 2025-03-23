@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>navigation</name>
+  <version>0.0.0</version>
+  <description>TODO: Package description</description>
+  <maintainer email="dueiras@gmail.com">dueiras</maintainer>
+  <license>TODO: License declaration</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <build_depend>launch</build_depend>
+
+  <build_depend>joint_state_publisher</build_depend>
+
+  <build_depend>rviz2</build_depend>
+
+  <build_depend>navigation2</build_depend>
+  <build_depend>nav2_bringup</build_depend>
+  <build_depend>nav2_bt_navigator</build_depend>
+  <build_depend>nav2_costmap_2d</build_depend>
+  <build_depend>nav2_core</build_depend>
+  <build_depend>nav2_dwb_controller</build_depend>
+  <build_depend>nav2_lifecycle_manager</build_depend>
+  <build_depend>nav2_map_server</build_depend>
+  <build_depend>nav2_behaviors</build_depend>
+  <build_depend>nav2_planner</build_depend>
+  <build_depend>nav2_msgs</build_depend>
+  <build_depend>nav2_navfn_planner</build_depend>
+  <build_depend>nav2_rviz_plugins</build_depend>
+  <build_depend>nav2_behavior_tree</build_depend>
+  <build_depend>nav2_util</build_depend>
+  <build_depend>nav2_voxel_grid</build_depend>
+  <build_depend>nav2_controller</build_depend>
+  <build_depend>nav2_waypoint_follower</build_depend>
+  <build_depend>pointcloud_to_laserscan</build_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
