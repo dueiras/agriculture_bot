@@ -15,21 +15,21 @@ def generate_launch_description():
     map_dir = LaunchConfiguration(
         "map",
         default=os.path.join(
-            get_package_share_directory("navigation"), "maps", "carter_outdoor_navigation.yaml"
+            get_package_share_directory("navigation"), "maps", "extended_outdoor_navigation.yaml"
         ),
     )
 
     param_dir = LaunchConfiguration(
         "params_file",
         default=os.path.join(
-            get_package_share_directory("navigation"), "params", "navigation_params.yaml"
+            get_package_share_directory("navigation"), "params", "global_navigation_params.yaml"
         ),
     )
 
 
     nav2_bringup_launch_dir = os.path.join(get_package_share_directory("nav2_bringup"), "launch")
 
-    rviz_config_dir = os.path.join(get_package_share_directory("navigation"), "rviz2", "navigation.rviz")
+    rviz_config_dir = os.path.join(get_package_share_directory("navigation"), "rviz2", "global_navigation.rviz")
 
     return LaunchDescription(
         [
@@ -42,7 +42,7 @@ def generate_launch_description():
             ),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(os.path.join(nav2_bringup_launch_dir, "rviz_launch.py")),
-                launch_arguments={"namespace": "", "use_namespace": "False", "rviz_config": rviz_config_dir}.items(),
+                launch_arguments={"namespace": "", "use_namespace": "False","rviz_config": rviz_config_dir}.items(),
             ),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([nav2_bringup_launch_dir, "/bringup_launch.py"]),
@@ -70,5 +70,6 @@ def generate_launch_description():
                 }],
                 name='pointcloud_to_laserscan'
             )
+
         ]
     )
