@@ -27,7 +27,7 @@ def generate_launch_description():
         ),
     )
 
-    isaac_config_path = os.path.join(get_package_share_directory("navigation"), "params", "isaacsim_local.yaml")
+    isaac_config_path = os.path.join(get_package_share_directory("navigation"), "params", "isaacsim.yaml")
     with open(isaac_config_path, "r") as file:
         isaac_config = yaml.safe_load(file)
 
