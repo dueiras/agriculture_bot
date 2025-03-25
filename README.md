@@ -25,6 +25,10 @@ chmod u+x build.sh run.sh
 ./run.sh
 ```
 
+## World Setup
+As the isaacsim stage file, the one with the world environment and robot, are too large (>170MB), I will not include them in this repo. If you are interested let me known and I can share them.
+Important to note that I did not developed the Nova_Carter_ROS robot file, I used from the IsaacSim tutorial.
+
 ## Running
 First time running isaac sim you can run with:
 ```bash
