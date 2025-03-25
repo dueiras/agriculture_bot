@@ -13,10 +13,6 @@ amcl:
     do_beamskip: false
     global_frame_id: "map"
     lambda_short: 0.1
-    laser_likelihood_max_dist: 2.0
-    laser_max_range: 100.0
-    laser_min_range: -1.0
-    laser_model_type: "likelihood_field"
     max_beams: 360
     max_particles: 2000
     min_particles: 500
@@ -37,14 +33,13 @@ amcl:
     z_max: 0.05
     z_rand: 0.5
     z_short: 0.05
-    scan_topic: scan
     map_topic: map
     set_initial_pose: true
     always_reset_initial_pose: false
     first_map_only: false
     initial_pose:
-      x: 2.7
-      y: 1.5
+      x: 2.4
+      y: -1.0
       z: 0.0
       yaw: 3.14159
 
@@ -70,7 +65,7 @@ bt_navigator:
     plugin_lib_names:
     - nav2_compute_path_to_pose_action_bt_node
     - nav2_compute_path_through_poses_action_bt_node
-    - nav2_smooth_path_action_bt_node
+    #- nav2_smooth_path_action_bt_node
     - nav2_follow_path_action_bt_node
     - nav2_spin_action_bt_node
     - nav2_wait_action_bt_node
@@ -123,10 +118,7 @@ velocity_smoother:
     feedback: "OPEN_LOOP" 
     max_velocity: [1.8, 0.0, 1.2] 
     min_velocity: [-1.8, 0.0, -1.2] 
-    # deadband_velocity: [0.0, 0.0, 0.0] 
     velocity_timeout: 1.0 
-    # max_accel: [1.0, 0.0, 1.25] 
-    # max_decel: [-1.0, 0.0, -1.25] 
     odom_topic: "chassis/odom" 
     odom_duration: 0.1
 
@@ -150,8 +142,8 @@ controller_server:
     # Goal checker parameters
     stopped_goal_checker:
       plugin: "nav2_controller::StoppedGoalChecker"
-      xy_goal_tolerance: 0.25
-      yaw_goal_tolerance: 0.25
+      xy_goal_tolerance: 0.0001
+      yaw_goal_tolerance: 0.01
       stateful: True
     # DWB parameters
     FollowPath:
@@ -167,10 +159,10 @@ controller_server:
       min_speed_theta: 0.0
       acc_lim_x: 2.5
       acc_lim_y: 0.0
-      acc_lim_theta: 3.2
+      acc_lim_theta: 2.5
       decel_lim_x: -2.5
       decel_lim_y: 0.0
-      decel_lim_theta: -3.2
+      decel_lim_theta: -2.5
       vx_samples: 20
       vy_samples: 5
       vtheta_samples: 20
@@ -178,7 +170,7 @@ controller_server:
       linear_granularity: 0.05
       angular_granularity: 0.025
       transform_tolerance: 0.2
-      xy_goal_tolerance: 0.25
+      xy_goal_tolerance: 0.0001
       trans_stopped_velocity: 0.25
       short_circuit_trajectory_evaluation: True
       stateful: True
@@ -203,65 +195,16 @@ local_costmap:
     ros__parameters:
       update_frequency: 5.0
       publish_frequency: 2.0
-      footprint_padding: 0.25
+      footprint_padding: 0.01
       global_frame: odom
       robot_base_frame: base_link
       use_sim_time: True
       rolling_window: True
-      width: 10
-      height: 10
+      width: 2
+      height: 2
       resolution: 0.05
       transform_tolerance: 0.3
       footprint: "[ [0.14, 0.25], [0.14, -0.25], [-0.607, -0.25], [-0.607, 0.25] ]"
-      plugins: ["hesai_voxel_layer", "front_rplidar_obstacle_layer", "back_rplidar_obstacle_layer", "inflation_layer"]
-      # plugins: ["hesai_voxel_layer", "inflation_layer"]
-      inflation_layer:
-        plugin: "nav2_costmap_2d::InflationLayer"
-        enabled: True
-        cost_scaling_factor: 0.3
-        inflation_radius: 1.0
-      hesai_voxel_layer:
-        plugin: "nav2_costmap_2d::VoxelLayer"
-        enabled: True
-        footprint_clearing_enabled: true
-        max_obstacle_height: 2.0
-        publish_voxel_map: False
-        origin_z: 0.0
-        z_voxels: 16
-        z_resolution: 0.2
-        unknown_threshold: 15
-        observation_sources: pointcloud
-        pointcloud:  # no frame set, uses frame from message
-          topic: /front_3d_lidar/lidar_points
-          max_obstacle_height: 2.0
-          min_obstacle_height: 0.1
-          obstacle_max_range: 10.0
-          obstacle_min_range: 0.0
-          raytrace_max_range: 10.0
-          raytrace_min_range: 0.0
-          clearing: True
-          marking: True
-          data_type: "PointCloud2"
-      front_rplidar_obstacle_layer:
-        plugin: "nav2_costmap_2d::ObstacleLayer"
-        enabled: True
-        observation_sources: scan
-        scan:
-          topic: /front_2d_lidar/scan
-          max_obstacle_height: 2.0
-          clearing: True
-          marking: True
-          data_type: "LaserScan"
-      back_rplidar_obstacle_layer:
-        plugin: "nav2_costmap_2d::ObstacleLayer"
-        enabled: True
-        observation_sources: scan
-        scan:
-          topic: /back_2d_lidar/scan
-          max_obstacle_height: 2.0
-          clearing: True
-          marking: True
-          data_type: "LaserScan"
   local_costmap_client:
     ros__parameters:
       use_sim_time: True
@@ -269,39 +212,21 @@ local_costmap:
     ros__parameters:
       use_sim_time: True
 
-
-
 global_costmap:
   global_costmap:
     ros__parameters:
-      footprint_padding: 0.25
+      footprint_padding: 0.1
       update_frequency: 1.0
       publish_frequency: 1.0
       global_frame: map
       robot_base_frame: base_link
       use_sim_time: True
       footprint: "[ [0.14, 0.25], [0.14, -0.25], [-0.607, -0.25], [-0.607, 0.25] ]"
-      # rolling_window: True
-      # width: 200
-      # height: 200
       resolution: 0.05
-      # origin_x: -100.0
-      # origin_y: -100.0
-      plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
+      plugins: ["static_layer", "inflation_layer", "obstacle_layer"]
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
-        observation_sources: scan
-        scan:
-          topic: /scan
-          max_obstacle_height: 2.0
-          clearing: True
-          marking: True
-          data_type: "LaserScan"
-          raytrace_max_range: 10.0
-          raytrace_min_range: 0.0
-          obstacle_max_range: 10.0
-          obstacle_min_range: 0.0
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
         map_subscribe_transient_local: True
@@ -337,7 +262,7 @@ planner_server:
     planner_plugins: ["GridBased"]
     GridBased:
       plugin: "nav2_navfn_planner/NavfnPlanner"
-      tolerance: 0.5
+      tolerance: 0.1
       use_astar: false
       allow_unknown: true
 
@@ -391,5 +316,5 @@ waypoint_follower:
     wait_at_waypoint:
       plugin: "nav2_waypoint_follower::WaitAtWaypoint"
       enabled: True
-      waypoint_pause_duration: 200
+      waypoint_pause_duration: 20
 
