@@ -12,11 +12,10 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='Your Name',
-    maintainer_email='your@email.com',
+    maintainer='Eduardo Eiras',
+    maintainer_email='dueiras@gmail.com',
     description='Visual Servoing navigation package',
     license='Apache-2.0',
-    tests_require=['pytest'],
     entry_points={
         'console_scripts': [
             'visual_servoing = perception.visual_servoing:main',
