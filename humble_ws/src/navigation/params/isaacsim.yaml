@@ -1,4 +1,4 @@
-gui_path: "/root/assets/"
+gui_path: "/root/assets/Collected_world_flat/world_flat.usd"
 install_path: "/isaac-sim/"
 play_sim_on_start: true
 custom_args: "--allow-root"
