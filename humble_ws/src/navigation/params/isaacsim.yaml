@@ -1,4 +1,4 @@
-gui_path: /root/assets/
-install_path: /isaac-sim/
+gui_path: "/root/assets/"
+install_path: "/isaac-sim/"
 play_sim_on_start: true
 custom_args: "--allow-root"
