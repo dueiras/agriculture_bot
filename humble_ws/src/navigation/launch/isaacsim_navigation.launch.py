@@ -27,7 +27,7 @@ def generate_launch_description():
         ),
     )
 
-    isaac_config_path = os.path.join(get_package_share_directory("navigation"), "params", "isaacsim.yaml")
+    isaac_config_path = os.path.join(get_package_share_directory("navigation"), "params", "isaacsim_local.yaml")
     with open(isaac_config_path, "r") as file:
         isaac_config = yaml.safe_load(file)
 
@@ -36,6 +36,10 @@ def generate_launch_description():
     play_sim_on_start = str(isaac_config.get("play_sim_on_start", "true")).lower()  # Convert bool to string
     custom_args = isaac_config.get("custom_args", "--allow-root")
 
+    goal_text_file = LaunchConfiguration(
+        "goal_text_file_path",
+        default=os.path.join(get_package_share_directory("navigation"), "params", "goals.txt"),
+    )
 
     nav2_bringup_launch_dir = os.path.join(get_package_share_directory("nav2_bringup"), "launch")
 
@@ -66,6 +70,21 @@ def generate_launch_description():
                 PythonLaunchDescriptionSource([nav2_bringup_launch_dir, "/bringup_launch.py"]),
                 launch_arguments={"map": map_dir, "use_sim_time": use_sim_time, "params_file": param_dir}.items(),
             ),
+            Node(
+                name="set_navigation_goals",
+                package="navigation",
+                executable="navigate_through_poses",
+                parameters=[
+                    {
+                        "iteration_count": 3,
+                        "action_server_name": "navigate_through_poses",
+                        "obstacle_search_distance_in_meters": 0.2,
+                        "goal_text_file_path": goal_text_file,
+                        "initial_pose": [2.4, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0],
+                    }
+                ],
+                output="screen",
+            )
 
         ]
     )
