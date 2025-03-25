@@ -37,9 +37,27 @@ RUN apt-get update && apt-get install -y \
 # Install text editor 
 RUN apt-get update && apt-get install -y nano
 
+# Fundamentals
+RUN apt-get update && apt-get install -y \
+        libxtensor-dev \
+        python3-bloom \
+        python3-colcon-common-extensions \
+        python3-pip \
+        python3-pybind11 \
+        python3-rosdep \
+        python3-rosinstall-generator \
+        python3-vcstool \
+        quilt
+
 # Configure the ROS 2 environment
 SHELL ["/bin/bash", "-c"]
 RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc
+
+# Copy ros2 workspace
+COPY humble_ws /root/humble_ws/
+
+# Copy world file
+COPY cultivar_extended.usd /root/
 
 # Set necessary environment variables
 ENV ROS_VERSION=2
