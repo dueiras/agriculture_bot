@@ -54,10 +54,10 @@ SHELL ["/bin/bash", "-c"]
 RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc
 
 # Copy ros2 workspace
-COPY humble_ws /root/humble_ws/
+COPY humble_ws /root/humble_ws
 
 # Copy world file
-COPY cultivar_extended.usd /root/
+COPY assets /root/assets/
 
 # Set necessary environment variables
 ENV ROS_VERSION=2
