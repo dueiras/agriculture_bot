@@ -1,4 +1,5 @@
 import os
+import yaml
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
@@ -26,6 +27,15 @@ def generate_launch_description():
         ),
     )
 
+    isaac_config_path = os.path.join(get_package_share_directory("navigation"), "params", "isaacsim.yaml")
+    with open(isaac_config_path, "r") as file:
+        isaac_config = yaml.safe_load(file)
+
+    gui_path = isaac_config.get("gui_path", "/root/assets/")
+    install_path = isaac_config.get("install_path", "/isaacsim/")
+    play_sim_on_start = str(isaac_config.get("play_sim_on_start", "true")).lower()  # Convert bool to string
+    custom_args = isaac_config.get("custom_args", "--allow-root")
+
 
     nav2_bringup_launch_dir = os.path.join(get_package_share_directory("nav2_bringup"), "launch")
 
@@ -36,9 +46,10 @@ def generate_launch_description():
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(os.path.join(get_package_share_directory("isaacsim"), "launch", 
                                               "run_isaacsim.launch.py")),
-                                              launch_arguments={"gui": "/home/dueiras/Personal/projects/agriculture_bot/assets/Collected_world_flat/world_flat.usd", 
-                                                                "play_sim_on_start": "true",
-                                                                "install_path": "/home/dueiras/isaacsim/isaac-sim-standalone@4.5.0-rc.36+release.19112.f59b3005.gl.linux-x86_64.release"}.items(),
+                                              launch_arguments={"gui": gui_path, 
+                                                                "play_sim_on_start": play_sim_on_start,
+                                                                "install_path": install_path,
+                                                                "custom_args": custom_args}.items(),
             ),
             DeclareLaunchArgument("map", default_value=map_dir, description="Full path to map file to load"),
             DeclareLaunchArgument(

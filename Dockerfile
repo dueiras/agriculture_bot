@@ -54,7 +54,7 @@ SHELL ["/bin/bash", "-c"]
 RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc
 
 # Copy ros2 workspace
-COPY humble_ws /root/humble_ws
+COPY humble_ws/src /root/humble_ws/src
 
 # Copy world file
 COPY assets /root/assets/
