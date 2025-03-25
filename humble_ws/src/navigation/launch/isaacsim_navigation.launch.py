@@ -33,6 +33,13 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(os.path.join(get_package_share_directory("isaacsim"), "launch", 
+                                              "run_isaacsim.launch.py")),
+                                              launch_arguments={"gui": "/home/dueiras/Personal/projects/agriculture_bot/assets/Collected_world_flat/world_flat.usd", 
+                                                                "play_sim_on_start": "true",
+                                                                "install_path": "/home/dueiras/isaacsim/isaac-sim-standalone@4.5.0-rc.36+release.19112.f59b3005.gl.linux-x86_64.release"}.items(),
+            ),
             DeclareLaunchArgument("map", default_value=map_dir, description="Full path to map file to load"),
             DeclareLaunchArgument(
                 "params_file", default_value=param_dir, description="Full path to param file to load"
