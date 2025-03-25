@@ -26,6 +26,8 @@ chmod u+x build.sh run.sh
 ```
 
 ## World Setup
+<img src="imgs/agribot_camera.png" alt="Camera view" width="400"/>
+
 As the isaacsim stage file, the one with the world environment and robot, are too large (>170MB), I will not include them in this repo. If you are interested let me known and I can share them.
 Important to note that I did not developed the Nova_Carter_ROS robot file, I used from the IsaacSim tutorial.
 
