@@ -17,6 +17,80 @@ This project focuses on **autonomous navigation** in an agricultural setting. Th
   - **RAM:** 32GB
   - **CPU:** Intel i7
 
+## Setup
+First clone this repository, then the Isaac-Sim stage`.usd` file should be inside a folder `assets` like this:
+ ``` bash
+.
+├── assets
+│   └── Collected_world_flat
+│       ├── SubUSDs
+│       │   ├── materials
+│       │   └── textures
+│       └── world_flat.usd
+├── build.sh
+├── Dockerfile
+├── humble_ws
+│   └── src
+│       ├── isaacsim
+│       │   ├── CMakeLists.txt
+│       │   ├── launch
+│       │   │   └── run_isaacsim.launch.py
+│       │   ├── package.xml
+│       │   └── scripts
+│       │       ├── open_isaacsim_stage.py
+│       │       └── run_isaacsim.py
+│       ├── navigation
+│       │   ├── CMakeLists.txt
+│       │   ├── launch
+│       │   │   ├── isaacsim_navigation.launch.py
+│       │   │   ├── isaacsim_visual_navigation.launch.py
+│       │   │   ├── navigation.launch.py
+│       │   │   └── visual_navigation.launch.py
+│       │   ├── maps
+│       │   │   ├── carter_outdoor_navigation.png
+│       │   │   ├── carter_outdoor_navigation.yaml
+│       │   │   ├── extended_outdoor_navigation.png
+│       │   │   └── extended_outdoor_navigation.yaml
+│       │   ├── navigation
+│       │   │   ├── __init__.py
+│       │   │   ├── navigate_through_poses.py
+│       │   │   └── navigate_to_pose.py
+│       │   ├── package.xml
+│       │   ├── params
+│       │   │   ├── global_navigation_params.yaml
+│       │   │   ├── goals.txt
+│       │   │   └── isaacsim.yaml
+│       │   ├── resource
+│       │   │   └── navigation
+│       │   ├── rviz2
+│       │   │   ├── global_navigation.rviz
+│       │   │   └── navigation.rviz
+│       │   ├── setup.cfg
+│       │   └── setup.py
+│       └── perception
+│           ├── package.xml
+│           ├── perception
+│           │   ├── hsv_threshold.py
+│           │   ├── __init__.py
+│           │   ├── local_visual_navigation.py
+│           │   └── visual_servoing.py
+│           ├── resource
+│           │   └── perception
+│           ├── setup.cfg
+│           ├── setup.py
+│           └── test
+│               ├── test_copyright.py
+│               ├── test_flake8.py
+│               └── test_pep257.py
+├── imgs
+│   ├── aerial_view.png
+│   ├── agribot_camera.png
+│   ├── agribot_camera_segmented.png
+│   └── navigation.gif
+├── README.md
+├── run.sh
+ ```
+
 ## Docker Setup
 A **Dockerfile** is available to simplify setup. To build and run the container:
 ```bash
@@ -37,14 +111,23 @@ First time running isaac sim you can run with:
 ./runapp.sh
 ```
 
-and it can take some time, just ignore messages and wait.
+and it can take some time, just ignore messages saying isaacsim is not responding and wait.
 
 To run ROS2 :
 ```bash
-cd /root/humble_ws
+cd /root/humble_ws/
 colcon build
 source install/setup.bash
-ros2 launch navigation isaacsim_nagivation.launch.py
+```
+### Global Navigation Example
+After compiling ROS2
+``` bash 
+ros2 launch navigation isaacsim_navigation.launch.py
+```
+
+### Visual Navigation Example
+``` bash 
+ros2 launch navigation isaacsim_visual_navigation.launch.py
 ```
 
 ## References

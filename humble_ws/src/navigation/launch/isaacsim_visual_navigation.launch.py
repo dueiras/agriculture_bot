@@ -62,7 +62,7 @@ def generate_launch_description():
 
     rviz_config_dir = os.path.join(get_package_share_directory("navigation"), "rviz2", "global_navigation.rviz")
 
-    ld_automatic_goal = Node(
+    ld_automatic_goal1 = Node(
                         name="set_navigation_goals",
                         package="navigation",
                         executable="navigate_through_poses",
@@ -75,6 +75,12 @@ def generate_launch_description():
                                 "initial_pose": [2.4, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0],
                             }
                         ],
+                        output="screen",
+                    )
+    ld_automatic_goal2 = Node(
+                        name="visual_local_navigation",
+                        package="perception",
+                        executable="visual_navigation",
                         output="screen",
                     )
 
@@ -121,16 +127,14 @@ def generate_launch_description():
             # Launch automatic goal generator node when Isaac Sim has finished loading.
             RegisterEventHandler(
                 OnProcessIO(
-                    on_stdout=lambda event: execute_second_node_if_condition_met(event, ld_automatic_goal)
+                    on_stdout=lambda event: execute_second_node_if_condition_met(event, ld_automatic_goal1)
                 )
             ),
-            
-            Node(
-                name="visual_local_navigation",
-                package="perception",
-                executable="visual_navigation",
-                output="screen",
-            )
+            RegisterEventHandler(
+                OnProcessIO(
+                    on_stdout=lambda event: execute_second_node_if_condition_met(event, ld_automatic_goal2)
+                )
+            ),
 
         ]
     )
