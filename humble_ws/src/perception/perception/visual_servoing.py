@@ -38,7 +38,6 @@ class CameraBasedNavigation(Node):
         lower = np.array([22, 43, 1])  
         upper = np.array([100, 157, 184])
         thresh = cv2.inRange(hsv, lower, upper)
-        #thresh = cv2.bitwise_not(mask)  # Invert mask so brown is white (navigable)
 
         # split left and right regions
         # and sum the bottom half of pixel intensities
@@ -46,20 +45,28 @@ class CameraBasedNavigation(Node):
         left_region = np.sum(thresh[height//2:, :width//2])  
         right_region = np.sum(thresh[height//2:, width//2:])
 
-        twist = Twist()
-        twist.linear.x = 0.5  # always move forward
+        self.get_logger().info(f"Right: {right_region}, Left: {left_region}")
 
-        # this value was tuned by trial and error
-        if left_region > right_region:
-            twist.angular.z = -0.4  # Turn right
+        twist = Twist()
+        twist.linear.x = 0.3  # always move forward
+
+        if(right_region > 0 and left_region > 0):
+            z = np.log(right_region/left_region)
+            self.get_logger().info(f"Z: {z}")
+            if(z >= 0.5):
+                z = 0.5
+            elif(z <= -0.5):
+                z = -0.5
         else:
-            twist.angular.z = 0.4  # Turn left
+            z = 0.0
+
+        twist.angular.z = z           
 
         # publish velocity
         self.cmd_vel_pub.publish(twist)
 
         # show the processed image
-        cv2.imshow("Processed Image", thresh)
+        cv2.imshow("Processed Image", thresh[height//2:, :])
         cv2.waitKey(1)
 
 def main(args=None):

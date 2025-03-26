@@ -28,8 +28,8 @@ class CameraBasedNavigation(Node):
 
         self.global_x = 0.1
         self.global_yaw = 0.0
-        self.max_z = 0.7
-        self.fixed_x_vel = 0.4
+        self.max_z = 0.8
+        self.fixed_x_vel = 0.35
 
     def cmd_callback(self, msg):
         """
@@ -76,7 +76,7 @@ class CameraBasedNavigation(Node):
             elif(z <= -self.max_z):
                 z = -self.max_z
 
-            if((abs(z)>abs(self.global_yaw)) and abs(z) > 0.15):
+            if((abs(z)>abs(self.global_yaw))):
                 self.get_logger().info(f"Possible Obstacle detected, sending angular vel: {z}")
                 twist.linear.x = self.fixed_x_vel
                 twist.angular.z = z           

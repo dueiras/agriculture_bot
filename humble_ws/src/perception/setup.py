@@ -19,6 +19,7 @@ setup(
     entry_points={
         'console_scripts': [
             'visual_servoing = perception.visual_servoing:main',
+            'visual_navigation = perception.local_visual_navigation:main'
         ],
     },
 )
