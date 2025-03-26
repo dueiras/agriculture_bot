@@ -108,7 +108,8 @@ class SetNavigationGoal(Node):
         goal_msg = NavigateThroughPoses.Goal()
         goal_msg.poses = []
 
-        for _ in range(4):  
+        pose = 0
+        while pose is not None:
             pose = self.__goal_generator.generate_goal()
             if pose is None:
                 break
